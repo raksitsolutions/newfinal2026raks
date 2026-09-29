@@ -1,9 +1,11 @@
 import React from 'react';
 import { Enquiry, BlogPost, CustomPage, Testimonial, FAQ, AdminUser } from '../../types';
+import { AdminTab } from './AdminDashboard';
 import { 
   MessageSquare, BookOpen, FileText, Star, HelpCircle, 
   Users, ArrowUpRight, TrendingUp, Clock, MapPin, Plus, 
-  ExternalLink, CheckCircle2, AlertCircle 
+  ExternalLink, CheckCircle2, AlertCircle, Palette, Menu as MenuIcon, 
+  Globe, BarChart3, Search, MessageCircle, Phone, Share2, Map, Shield 
 } from 'lucide-react';
 
 interface AdminOverviewProps {
@@ -13,7 +15,7 @@ interface AdminOverviewProps {
   testimonials: Testimonial[];
   faqs: FAQ[];
   users: AdminUser[];
-  onNavigateTab: (tab: 'enquiries' | 'blogs' | 'pages' | 'testimonials' | 'faqs' | 'users') => void;
+  onNavigateTab: (tab: AdminTab) => void;
   onOpenCreateEnquiry: () => void;
   onOpenCreateBlog: () => void;
   onOpenCreatePage: () => void;
@@ -65,7 +67,7 @@ const AdminOverview: React.FC<AdminOverviewProps> = ({
       tab: 'pages' as const
     },
     {
-      label: 'Client Testimonials',
+      label: 'Client Reviews',
       count: testimonials.length,
       badge: '5.0★ Verified',
       badgeColor: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30',
@@ -91,6 +93,17 @@ const AdminOverview: React.FC<AdminOverviewProps> = ({
       iconColor: 'text-fuchsia-400 bg-fuchsia-500/10',
       tab: 'users' as const
     }
+  ];
+
+  const quickModules = [
+    { label: 'Branding & Logo', desc: 'Logo, favicon, brand colors & footer credits', icon: Palette, tab: 'branding' as const, color: 'text-purple-400 bg-purple-500/10' },
+    { label: 'Header & Footer Menus', desc: 'Show/hide, active/inactive & add navigation URLs', icon: MenuIcon, tab: 'menus' as const, color: 'text-blue-400 bg-blue-500/10' },
+    { label: 'SEO Configuration', desc: 'Meta tags, OpenGraph cards & crawler robots', icon: Globe, tab: 'seo' as const, color: 'text-emerald-400 bg-emerald-500/10' },
+    { label: 'Google Analytics 4', desc: 'GA4 tracking ID, scripts & event monitoring', icon: BarChart3, tab: 'analytics' as const, color: 'text-amber-400 bg-amber-500/10' },
+    { label: 'Google Search Console', desc: 'Verification tag, indexing & sitemap submission', icon: Search, tab: 'search-console' as const, color: 'text-cyan-400 bg-cyan-500/10' },
+    { label: 'WhatsApp Chat Update', desc: 'Phone number, auto greeting & floating widget', icon: MessageCircle, tab: 'whatsapp' as const, color: 'text-green-400 bg-green-500/10' },
+    { label: 'Contact Details', desc: 'Primary phone, email, office address & working hours', icon: Phone, tab: 'contact' as const, color: 'text-sky-400 bg-sky-500/10' },
+    { label: 'Sitemap Module', desc: 'Crawl priority, change frequency & XML generator', icon: Map, tab: 'sitemap' as const, color: 'text-teal-400 bg-teal-500/10' },
   ];
 
   return (
@@ -125,10 +138,49 @@ const AdminOverview: React.FC<AdminOverviewProps> = ({
         })}
       </div>
 
+      {/* Direct Module Launchpad */}
+      <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-blue-400" /> Admin Modules Quick Launchpad
+          </h3>
+          <span className="text-[11px] text-slate-500">All modules support Edit, Delete, Update, Active/Inactive & Show/Hide</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          {quickModules.map((m, i) => {
+            const Icon = m.icon;
+            return (
+              <button
+                key={i}
+                onClick={() => onNavigateTab(m.tab)}
+                className="p-3.5 bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 hover:border-blue-500/40 rounded-xl text-left transition-all group flex flex-col justify-between"
+              >
+                <div>
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-2.5 ${m.color}`}>
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <div className="text-xs font-bold text-white group-hover:text-blue-400 transition-colors">
+                    {m.label}
+                  </div>
+                  <div className="text-[10px] text-slate-400 mt-0.5 line-clamp-2">
+                    {m.desc}
+                  </div>
+                </div>
+                <div className="mt-3 text-[10px] font-semibold text-blue-400 flex items-center gap-1">
+                  <span>Open Module</span>
+                  <ArrowUpRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Quick Action Shortcuts */}
       <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-blue-400" /> Quick Creation Shortcuts
+          <Plus className="w-4 h-4 text-blue-400" /> Quick Add Shortcuts
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <button

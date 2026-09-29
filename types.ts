@@ -125,6 +125,101 @@ export interface CustomPage {
   updatedAt: string;
 }
 
+export interface BrandingSettings {
+  logoUrl?: string; // Custom uploaded logo (data URL or external URL)
+  logoWhiteUrl?: string; // Custom logo for dark backgrounds
+  faviconUrl?: string; // Custom favicon URL or data URL
+  siteName: string;
+  tagline: string;
+  primaryColor: string;
+  accentColor: string;
+  darkColor: string;
+  copyrightText: string;
+  developedByText: string;
+  showDevelopedBy: boolean;
+  footerDescription: string;
+}
+
+export interface SEOSettings {
+  metaTitle: string;
+  metaDescription: string;
+  metaKeywords: string;
+  ogImage: string;
+  canonicalUrl: string;
+  robotsIndex: boolean;
+  robotsFollow: boolean;
+  schemaEnabled: boolean;
+  customSchemaJson?: string;
+}
+
+export interface SocialLink {
+  id: string;
+  platform: string;
+  url: string;
+  handle: string;
+  isActive: boolean;
+  showInNavbar: boolean;
+  showInFooter: boolean;
+}
+
+export interface AnalyticsSettings {
+  ga4MeasurementId: string;
+  ga4Enabled: boolean;
+  searchConsoleTag: string;
+  searchConsoleEnabled: boolean;
+  gtmContainerId: string;
+  gtmEnabled: boolean;
+  customHeadScript?: string;
+}
+
+export interface WhatsAppSettings {
+  phoneNumber: string;
+  defaultMessage: string;
+  floatingButtonVisible: boolean;
+  buttonPosition: 'right' | 'left';
+  hoverText: string;
+  agentStatus: string;
+  hoursText: string;
+}
+
+export interface ContactDetailsSettings {
+  phonePrimary: string;
+  phoneSecondary: string;
+  emailPrimary: string;
+  emailSupport: string;
+  addressLine1: string;
+  addressLine2: string;
+  businessHours: string;
+  mapsUrl: string;
+  showInContactPage: boolean;
+  showInFooter: boolean;
+}
+
+export interface SitemapItem {
+  id: string;
+  url: string;
+  name: string;
+  priority: string;
+  changeFreq: 'daily' | 'weekly' | 'monthly';
+  isActive: boolean;
+  showInSitemapPage: boolean;
+  lastModified: string;
+}
+
+export interface NavigationMenuItem {
+  id: string;
+  label: string;
+  routeType: ViewType;
+  routeId?: string;
+  externalUrl?: string;
+  target?: '_self' | '_blank';
+  order: number;
+  isActive: boolean;
+  showInHeader: boolean;
+  showInFooter: boolean;
+  category?: 'Explore Hub' | 'Local Offices' | 'Legal';
+}
+
 export type ViewType = 'home' | 'service' | 'industry' | 'location' | 'industries-hub' | 'services-hub' | 'blog-hub' | 'blog-post' | 'about' | 'gallery' | 'contact-page' | 'logo-generator' | 'case-studies' | 'case-study' | 'terms' | 'privacy' | 'sitemap' | 'admin' | 'custom-page';
 
 export interface Route {

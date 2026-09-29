@@ -1,4 +1,8 @@
-import { AdminUser, Enquiry, CustomPage, BlogPost, Testimonial, FAQ } from '../types';
+import { 
+  AdminUser, Enquiry, CustomPage, BlogPost, Testimonial, FAQ,
+  BrandingSettings, SEOSettings, SocialLink, AnalyticsSettings,
+  WhatsAppSettings, ContactDetailsSettings, SitemapItem, NavigationMenuItem 
+} from '../types';
 import { BLOG_POSTS, TESTIMONIALS } from '../constants';
 
 const STORAGE_KEYS = {
@@ -8,7 +12,15 @@ const STORAGE_KEYS = {
   BLOGS: 'raks_blogs_v1',
   PAGES: 'raks_custom_pages_v1',
   TESTIMONIALS: 'raks_testimonials_v1',
-  FAQS: 'raks_faqs_v1'
+  FAQS: 'raks_faqs_v1',
+  BRANDING: 'raks_branding_v1',
+  SEO: 'raks_seo_v1',
+  SOCIAL: 'raks_social_v1',
+  ANALYTICS: 'raks_analytics_v1',
+  WHATSAPP: 'raks_whatsapp_v1',
+  CONTACT: 'raks_contact_v1',
+  SITEMAP: 'raks_sitemap_v1',
+  MENUS: 'raks_menus_v1'
 };
 
 // Initial Seed Data
@@ -256,6 +268,119 @@ const INITIAL_FAQS: FAQ[] = [
   }
 ];
 
+const DEFAULT_BRANDING: BrandingSettings = {
+  logoUrl: '',
+  logoWhiteUrl: '',
+  faviconUrl: '/raks-icon.svg',
+  siteName: 'RAKS IT SOLUTIONS',
+  tagline: '— EXPERIENCE FULL OF IDEAS —',
+  primaryColor: '#14387f',
+  accentColor: '#2563eb',
+  darkColor: '#0f172a',
+  copyrightText: '© 2026 RAKS IT SOLUTIONS. All rights reserved.',
+  developedByText: 'Developed by RAKS IT SOLUTIONS',
+  showDevelopedBy: true,
+  footerDescription: "Telangana's premier technology agency specializing in high-performance web development, mobile applications, and strategic digital marketing in Warangal, Hanamkonda & Hyderabad."
+};
+
+const DEFAULT_SEO: SEOSettings = {
+  metaTitle: 'RAKS IT SOLUTIONS | Premier Software & SEO Agency in Telangana',
+  metaDescription: 'Expert Web Development, SEO, and Digital Marketing hub in Warangal, Hanamkonda & Hyderabad.',
+  metaKeywords: 'Web Development Warangal, SEO Telangana, Software Company Hyderabad, App Development Hanamkonda',
+  ogImage: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200',
+  canonicalUrl: 'https://raksitsolutions.com',
+  robotsIndex: true,
+  robotsFollow: true,
+  schemaEnabled: true,
+  customSchemaJson: JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "RAKS IT SOLUTIONS",
+    "url": "https://raksitsolutions.com",
+    "telephone": "+919010591950",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Plot #45, Diamond Block, Subedari",
+      "addressLocality": "Hanamkonda, Warangal",
+      "addressRegion": "Telangana",
+      "postalCode": "506001",
+      "addressCountry": "IN"
+    }
+  }, null, 2)
+};
+
+const DEFAULT_SOCIAL: SocialLink[] = [
+  { id: 'soc-1', platform: 'Facebook', url: 'https://facebook.com/raksitsolutions', handle: '@raksitsolutions', isActive: true, showInNavbar: true, showInFooter: true },
+  { id: 'soc-2', platform: 'Twitter / X', url: 'https://twitter.com/raksitsolutions', handle: '@raksitsolutions', isActive: true, showInNavbar: true, showInFooter: true },
+  { id: 'soc-3', platform: 'Instagram', url: 'https://instagram.com/raksitsolutions', handle: '@raksitsolutions', isActive: true, showInNavbar: true, showInFooter: true },
+  { id: 'soc-4', platform: 'LinkedIn', url: 'https://linkedin.com/company/raksitsolutions', handle: 'raksitsolutions', isActive: true, showInNavbar: true, showInFooter: true },
+  { id: 'soc-5', platform: 'YouTube', url: 'https://youtube.com/@raksitsolutions', handle: '@raksitsolutions', isActive: true, showInNavbar: false, showInFooter: true },
+  { id: 'soc-6', platform: 'GitHub', url: 'https://github.com/raksitsolutions', handle: 'raksitsolutions', isActive: true, showInNavbar: false, showInFooter: true }
+];
+
+const DEFAULT_ANALYTICS: AnalyticsSettings = {
+  ga4MeasurementId: 'G-RAKS2026TECH',
+  ga4Enabled: true,
+  searchConsoleTag: 'google-site-verification=raks_telangana_premier_tech_hub_2026',
+  searchConsoleEnabled: true,
+  gtmContainerId: 'GTM-RAKS99',
+  gtmEnabled: false,
+  customHeadScript: ''
+};
+
+const DEFAULT_WHATSAPP: WhatsAppSettings = {
+  phoneNumber: '919010591950',
+  defaultMessage: "Hello RAKS IT SOLUTIONS, I'm interested in your services.",
+  floatingButtonVisible: true,
+  buttonPosition: 'right',
+  hoverText: 'Chat on WhatsApp',
+  agentStatus: 'Online • Fast Response',
+  hoursText: '9:00 AM - 7:00 PM'
+};
+
+const DEFAULT_CONTACT: ContactDetailsSettings = {
+  phonePrimary: '+91 90105 91950',
+  phoneSecondary: '+91 98480 12345',
+  emailPrimary: 'hello@raksitsolutions.com',
+  emailSupport: 'support@raksitsolutions.com',
+  addressLine1: 'Plot #45, Diamond Block, Subedari',
+  addressLine2: 'Hanamkonda, Warangal, Telangana - 506001',
+  businessHours: 'Mon - Fri: 9 AM - 7 PM, Sat: 10 AM - 4 PM',
+  mapsUrl: 'https://maps.google.com/?q=Hanamkonda,Warangal',
+  showInContactPage: true,
+  showInFooter: true
+};
+
+const DEFAULT_SITEMAP_ITEMS: SitemapItem[] = [
+  { id: 'sm-1', url: '/', name: 'Home Page', priority: '1.0', changeFreq: 'daily', isActive: true, showInSitemapPage: true, lastModified: '2026-09-29' },
+  { id: 'sm-2', url: '/about-us', name: 'About Us', priority: '0.8', changeFreq: 'weekly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-28' },
+  { id: 'sm-3', url: '/services', name: 'Services Hub', priority: '0.9', changeFreq: 'weekly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-28' },
+  { id: 'sm-4', url: '/industries', name: 'Industries Hub', priority: '0.8', changeFreq: 'weekly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-27' },
+  { id: 'sm-5', url: '/case-studies', name: 'Client Case Studies', priority: '0.8', changeFreq: 'weekly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-26' },
+  { id: 'sm-6', url: '/blog', name: 'Tech Insights & Blog', priority: '0.9', changeFreq: 'daily', isActive: true, showInSitemapPage: true, lastModified: '2026-09-29' },
+  { id: 'sm-7', url: '/contact-us', name: 'Contact Us', priority: '0.8', changeFreq: 'weekly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-29' },
+  { id: 'sm-8', url: '/logo-generator', name: 'Logo Generator', priority: '0.7', changeFreq: 'monthly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-20' },
+  { id: 'sm-9', url: '/terms-and-conditions', name: 'Terms and Conditions', priority: '0.3', changeFreq: 'monthly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-01' },
+  { id: 'sm-10', url: '/privacy-policy', name: 'Privacy Policy', priority: '0.3', changeFreq: 'monthly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-01' },
+  { id: 'sm-11', url: '/sitemap', name: 'HTML Sitemap Directory', priority: '0.5', changeFreq: 'weekly', isActive: true, showInSitemapPage: true, lastModified: '2026-09-29' }
+];
+
+const DEFAULT_MENUS: NavigationMenuItem[] = [
+  { id: 'menu-1', label: 'Home', routeType: 'home', order: 1, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-2', label: 'About Us', routeType: 'about', order: 2, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-3', label: 'Services', routeType: 'services-hub', order: 3, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-4', label: 'Industries', routeType: 'industries-hub', order: 4, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-5', label: 'Locations', routeType: 'home', order: 5, isActive: true, showInHeader: true, showInFooter: false },
+  { id: 'menu-6', label: 'Blog', routeType: 'blog-hub', order: 6, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-7', label: 'Case Studies', routeType: 'case-studies', order: 7, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-8', label: 'FAQs', routeType: 'home', order: 8, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-9', label: 'Contact Us', routeType: 'contact-page', order: 9, isActive: true, showInHeader: true, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-10', label: 'Logo Generator', routeType: 'logo-generator', order: 10, isActive: true, showInHeader: false, showInFooter: true, category: 'Explore Hub' },
+  { id: 'menu-11', label: 'Terms & Conditions', routeType: 'terms', order: 11, isActive: true, showInHeader: false, showInFooter: true, category: 'Legal' },
+  { id: 'menu-12', label: 'Privacy Policy', routeType: 'privacy', order: 12, isActive: true, showInHeader: false, showInFooter: true, category: 'Legal' },
+  { id: 'menu-13', label: 'Sitemap', routeType: 'sitemap', order: 13, isActive: true, showInHeader: false, showInFooter: true, category: 'Legal' }
+];
+
 class AdminStore {
   private listeners: Set<() => void> = new Set();
 
@@ -283,6 +408,70 @@ class AdminStore {
     }
     if (!localStorage.getItem(STORAGE_KEYS.FAQS)) {
       localStorage.setItem(STORAGE_KEYS.FAQS, JSON.stringify(INITIAL_FAQS));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.BRANDING)) {
+      localStorage.setItem(STORAGE_KEYS.BRANDING, JSON.stringify(DEFAULT_BRANDING));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.SEO)) {
+      localStorage.setItem(STORAGE_KEYS.SEO, JSON.stringify(DEFAULT_SEO));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.SOCIAL)) {
+      localStorage.setItem(STORAGE_KEYS.SOCIAL, JSON.stringify(DEFAULT_SOCIAL));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.ANALYTICS)) {
+      localStorage.setItem(STORAGE_KEYS.ANALYTICS, JSON.stringify(DEFAULT_ANALYTICS));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.WHATSAPP)) {
+      localStorage.setItem(STORAGE_KEYS.WHATSAPP, JSON.stringify(DEFAULT_WHATSAPP));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.CONTACT)) {
+      localStorage.setItem(STORAGE_KEYS.CONTACT, JSON.stringify(DEFAULT_CONTACT));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.SITEMAP)) {
+      localStorage.setItem(STORAGE_KEYS.SITEMAP, JSON.stringify(DEFAULT_SITEMAP_ITEMS));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.MENUS)) {
+      localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(DEFAULT_MENUS));
+    }
+    this.applyDynamicDOM();
+  }
+
+  public applyDynamicDOM() {
+    if (typeof window === 'undefined') return;
+
+    try {
+      const branding = this.getBranding();
+      if (branding.faviconUrl) {
+        let link: HTMLLinkElement | null = document.querySelector("link[rel*='icon']");
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
+        }
+        link.href = branding.faviconUrl;
+      }
+
+      if (branding.primaryColor) {
+        document.documentElement.style.setProperty('--brand-blue', branding.primaryColor);
+      }
+      if (branding.accentColor) {
+        document.documentElement.style.setProperty('--brand-blue-accent', branding.accentColor);
+      }
+
+      // Search Console meta tag
+      const analytics = this.getAnalytics();
+      if (analytics.searchConsoleEnabled && analytics.searchConsoleTag) {
+        let scMeta = document.querySelector('meta[name="google-site-verification"]');
+        if (!scMeta) {
+          scMeta = document.createElement('meta');
+          scMeta.setAttribute('name', 'google-site-verification');
+          document.head.appendChild(scMeta);
+        }
+        const cleanTag = analytics.searchConsoleTag.replace(/^google-site-verification=/, '');
+        scMeta.setAttribute('content', cleanTag);
+      }
+    } catch (e) {
+      console.warn('Error applying dynamic DOM settings', e);
     }
   }
 
@@ -575,6 +764,189 @@ class AdminStore {
     return true;
   }
 
+  // --- BRANDING ---
+  public getBranding(): BrandingSettings {
+    if (typeof window === 'undefined') return DEFAULT_BRANDING;
+    const data = localStorage.getItem(STORAGE_KEYS.BRANDING);
+    return data ? { ...DEFAULT_BRANDING, ...JSON.parse(data) } : DEFAULT_BRANDING;
+  }
+
+  public updateBranding(updates: Partial<BrandingSettings>): BrandingSettings {
+    const current = this.getBranding();
+    const updated = { ...current, ...updates };
+    localStorage.setItem(STORAGE_KEYS.BRANDING, JSON.stringify(updated));
+    this.applyDynamicDOM();
+    this.notify();
+    return updated;
+  }
+
+  // --- SEO ---
+  public getSEO(): SEOSettings {
+    if (typeof window === 'undefined') return DEFAULT_SEO;
+    const data = localStorage.getItem(STORAGE_KEYS.SEO);
+    return data ? { ...DEFAULT_SEO, ...JSON.parse(data) } : DEFAULT_SEO;
+  }
+
+  public updateSEO(updates: Partial<SEOSettings>): SEOSettings {
+    const current = this.getSEO();
+    const updated = { ...current, ...updates };
+    localStorage.setItem(STORAGE_KEYS.SEO, JSON.stringify(updated));
+    this.notify();
+    return updated;
+  }
+
+  // --- SOCIAL MEDIA ---
+  public getSocialLinks(): SocialLink[] {
+    if (typeof window === 'undefined') return DEFAULT_SOCIAL;
+    const data = localStorage.getItem(STORAGE_KEYS.SOCIAL);
+    return data ? JSON.parse(data) : DEFAULT_SOCIAL;
+  }
+
+  public updateSocialLink(id: string, updates: Partial<SocialLink>): boolean {
+    const list = this.getSocialLinks();
+    const idx = list.findIndex(s => s.id === id);
+    if (idx === -1) return false;
+    list[idx] = { ...list[idx], ...updates };
+    localStorage.setItem(STORAGE_KEYS.SOCIAL, JSON.stringify(list));
+    this.notify();
+    return true;
+  }
+
+  public addSocialLink(item: Omit<SocialLink, 'id'>): SocialLink {
+    const list = this.getSocialLinks();
+    const newItem: SocialLink = { ...item, id: `soc-${Date.now()}` };
+    list.push(newItem);
+    localStorage.setItem(STORAGE_KEYS.SOCIAL, JSON.stringify(list));
+    this.notify();
+    return newItem;
+  }
+
+  public deleteSocialLink(id: string): boolean {
+    let list = this.getSocialLinks();
+    list = list.filter(s => s.id !== id);
+    localStorage.setItem(STORAGE_KEYS.SOCIAL, JSON.stringify(list));
+    this.notify();
+    return true;
+  }
+
+  // --- ANALYTICS ---
+  public getAnalytics(): AnalyticsSettings {
+    if (typeof window === 'undefined') return DEFAULT_ANALYTICS;
+    const data = localStorage.getItem(STORAGE_KEYS.ANALYTICS);
+    return data ? { ...DEFAULT_ANALYTICS, ...JSON.parse(data) } : DEFAULT_ANALYTICS;
+  }
+
+  public updateAnalytics(updates: Partial<AnalyticsSettings>): AnalyticsSettings {
+    const current = this.getAnalytics();
+    const updated = { ...current, ...updates };
+    localStorage.setItem(STORAGE_KEYS.ANALYTICS, JSON.stringify(updated));
+    this.applyDynamicDOM();
+    this.notify();
+    return updated;
+  }
+
+  // --- WHATSAPP CHAT ---
+  public getWhatsApp(): WhatsAppSettings {
+    if (typeof window === 'undefined') return DEFAULT_WHATSAPP;
+    const data = localStorage.getItem(STORAGE_KEYS.WHATSAPP);
+    return data ? { ...DEFAULT_WHATSAPP, ...JSON.parse(data) } : DEFAULT_WHATSAPP;
+  }
+
+  public updateWhatsApp(updates: Partial<WhatsAppSettings>): WhatsAppSettings {
+    const current = this.getWhatsApp();
+    const updated = { ...current, ...updates };
+    localStorage.setItem(STORAGE_KEYS.WHATSAPP, JSON.stringify(updated));
+    this.notify();
+    return updated;
+  }
+
+  // --- CONTACT DETAILS ---
+  public getContactDetails(): ContactDetailsSettings {
+    if (typeof window === 'undefined') return DEFAULT_CONTACT;
+    const data = localStorage.getItem(STORAGE_KEYS.CONTACT);
+    return data ? { ...DEFAULT_CONTACT, ...JSON.parse(data) } : DEFAULT_CONTACT;
+  }
+
+  public updateContactDetails(updates: Partial<ContactDetailsSettings>): ContactDetailsSettings {
+    const current = this.getContactDetails();
+    const updated = { ...current, ...updates };
+    localStorage.setItem(STORAGE_KEYS.CONTACT, JSON.stringify(updated));
+    this.notify();
+    return updated;
+  }
+
+  // --- SITEMAP ---
+  public getSitemapItems(): SitemapItem[] {
+    if (typeof window === 'undefined') return DEFAULT_SITEMAP_ITEMS;
+    const data = localStorage.getItem(STORAGE_KEYS.SITEMAP);
+    return data ? JSON.parse(data) : DEFAULT_SITEMAP_ITEMS;
+  }
+
+  public updateSitemapItem(id: string, updates: Partial<SitemapItem>): boolean {
+    const list = this.getSitemapItems();
+    const idx = list.findIndex(s => s.id === id);
+    if (idx === -1) return false;
+    list[idx] = { ...list[idx], ...updates, lastModified: new Date().toISOString().slice(0, 10) };
+    localStorage.setItem(STORAGE_KEYS.SITEMAP, JSON.stringify(list));
+    this.notify();
+    return true;
+  }
+
+  public addSitemapItem(item: Omit<SitemapItem, 'id' | 'lastModified'>): SitemapItem {
+    const list = this.getSitemapItems();
+    const newItem: SitemapItem = {
+      ...item,
+      id: `sm-${Date.now()}`,
+      lastModified: new Date().toISOString().slice(0, 10)
+    };
+    list.push(newItem);
+    localStorage.setItem(STORAGE_KEYS.SITEMAP, JSON.stringify(list));
+    this.notify();
+    return newItem;
+  }
+
+  public deleteSitemapItem(id: string): boolean {
+    let list = this.getSitemapItems();
+    list = list.filter(s => s.id !== id);
+    localStorage.setItem(STORAGE_KEYS.SITEMAP, JSON.stringify(list));
+    this.notify();
+    return true;
+  }
+
+  // --- NAVIGATION MENUS (HEADER & FOOTER) ---
+  public getNavigationMenus(): NavigationMenuItem[] {
+    if (typeof window === 'undefined') return DEFAULT_MENUS;
+    const data = localStorage.getItem(STORAGE_KEYS.MENUS);
+    return data ? JSON.parse(data) : DEFAULT_MENUS;
+  }
+
+  public updateNavigationMenuItem(id: string, updates: Partial<NavigationMenuItem>): boolean {
+    const list = this.getNavigationMenus();
+    const idx = list.findIndex(m => m.id === id);
+    if (idx === -1) return false;
+    list[idx] = { ...list[idx], ...updates };
+    localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(list));
+    this.notify();
+    return true;
+  }
+
+  public addNavigationMenuItem(item: Omit<NavigationMenuItem, 'id'>): NavigationMenuItem {
+    const list = this.getNavigationMenus();
+    const newItem: NavigationMenuItem = { ...item, id: `menu-${Date.now()}` };
+    list.push(newItem);
+    localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(list));
+    this.notify();
+    return newItem;
+  }
+
+  public deleteNavigationMenuItem(id: string): boolean {
+    let list = this.getNavigationMenus();
+    list = list.filter(m => m.id !== id);
+    localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(list));
+    this.notify();
+    return true;
+  }
+
   // Reset to initial seed data
   public resetToDefaults() {
     if (typeof window === 'undefined') return;
@@ -584,6 +956,15 @@ class AdminStore {
     localStorage.setItem(STORAGE_KEYS.PAGES, JSON.stringify(INITIAL_PAGES));
     localStorage.setItem(STORAGE_KEYS.TESTIMONIALS, JSON.stringify(TESTIMONIALS));
     localStorage.setItem(STORAGE_KEYS.FAQS, JSON.stringify(INITIAL_FAQS));
+    localStorage.setItem(STORAGE_KEYS.BRANDING, JSON.stringify(DEFAULT_BRANDING));
+    localStorage.setItem(STORAGE_KEYS.SEO, JSON.stringify(DEFAULT_SEO));
+    localStorage.setItem(STORAGE_KEYS.SOCIAL, JSON.stringify(DEFAULT_SOCIAL));
+    localStorage.setItem(STORAGE_KEYS.ANALYTICS, JSON.stringify(DEFAULT_ANALYTICS));
+    localStorage.setItem(STORAGE_KEYS.WHATSAPP, JSON.stringify(DEFAULT_WHATSAPP));
+    localStorage.setItem(STORAGE_KEYS.CONTACT, JSON.stringify(DEFAULT_CONTACT));
+    localStorage.setItem(STORAGE_KEYS.SITEMAP, JSON.stringify(DEFAULT_SITEMAP_ITEMS));
+    localStorage.setItem(STORAGE_KEYS.MENUS, JSON.stringify(DEFAULT_MENUS));
+    this.applyDynamicDOM();
     this.notify();
   }
 }

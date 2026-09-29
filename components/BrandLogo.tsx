@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { adminStore } from '../services/adminStore';
 
 interface BrandLogoProps {
   className?: string;
@@ -13,9 +14,41 @@ const BrandLogo: React.FC<BrandLogoProps> = ({
   showTagline = true,
   onClick
 }) => {
+  const [branding, setBranding] = useState(() => adminStore.getBranding());
+
+  useEffect(() => {
+    const unsub = adminStore.subscribe(() => {
+      setBranding(adminStore.getBranding());
+    });
+    return () => unsub();
+  }, []);
+
   const isDarkBg = variant === 'light';
-  
+
+  // Check if custom uploaded logo is active
+  const customImg = isDarkBg ? (branding.logoWhiteUrl || branding.logoUrl) : branding.logoUrl;
+  if (customImg && variant !== 'icon') {
+    return (
+      <img
+        src={customImg}
+        alt={branding.siteName || "RAKS IT SOLUTIONS"}
+        className={`${className} object-contain cursor-pointer transition-transform`}
+        onClick={onClick}
+      />
+    );
+  }
+
   if (variant === 'icon') {
+    if (branding.faviconUrl && branding.faviconUrl !== '/raks-icon.svg') {
+      return (
+        <img
+          src={branding.faviconUrl}
+          alt={branding.siteName || "Icon"}
+          className={`${className} object-contain cursor-pointer`}
+          onClick={onClick}
+        />
+      );
+    }
     return (
       <svg 
         className={className}
@@ -27,7 +60,7 @@ const BrandLogo: React.FC<BrandLogoProps> = ({
         aria-label="RAKS IT SOLUTIONS Icon"
       >
         <path 
-          fill={isDarkBg ? "#2563eb" : "#14387f"} 
+          fill={isDarkBg ? "#2563eb" : (branding.primaryColor || "#14387f")} 
           fillRule="evenodd" 
           clipRule="evenodd" 
           d="M 54 2 C 82.7 2 106 25.3 106 54 C 106 82.7 82.7 106 54 106 C 43.5 106 33.8 102.9 25.6 97.5 L 10 112 L 15.8 87.2 C 7.2 78 2 66.5 2 54 C 2 25.3 25.3 2 54 2 Z M 24 33 L 48 33 C 62 33 72 40 72 52 C 72 61.5 64.8 68 53.5 70 L 74 91 L 58 91 L 41.5 72 L 37 72 L 37 91 L 24 91 L 24 33 Z M 37 44 L 37 61 L 47 61 C 54 61 59 58 59 52.5 C 59 47 54 44 47 44 L 37 44 Z" 
@@ -36,11 +69,11 @@ const BrandLogo: React.FC<BrandLogoProps> = ({
     );
   }
 
-  const primaryBlue = isDarkBg ? "#ffffff" : "#14387f";
-  const emblemBlue = isDarkBg ? "#2563eb" : "#14387f";
+  const primaryBlue = isDarkBg ? "#ffffff" : (branding.primaryColor || "#14387f");
+  const emblemBlue = isDarkBg ? (branding.accentColor || "#2563eb") : (branding.primaryColor || "#14387f");
   const secondaryColor = isDarkBg ? "#cbd5e1" : "#4d5766";
   const taglineColor = isDarkBg ? "#94a3b8" : "#768090";
-  const dotColor = isDarkBg ? "#38bdf8" : "#14387f";
+  const dotColor = isDarkBg ? "#38bdf8" : (branding.primaryColor || "#14387f");
   const ruleColor = isDarkBg ? "#64748b" : "#768090";
 
   return (

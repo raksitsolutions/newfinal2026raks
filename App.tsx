@@ -35,6 +35,14 @@ import { SERVICES, INDUSTRIES, TELANGANA_CITIES, BLOG_POSTS, CASE_STUDIES } from
 const App: React.FC = () => {
   const [currentRoute, setCurrentRoute] = useState<Route>({ type: 'home' });
   const [isAiOpen, setIsAiOpen] = useState(false);
+  const [whatsapp, setWhatsapp] = useState(() => adminStore.getWhatsApp());
+
+  useEffect(() => {
+    const unsub = adminStore.subscribe(() => {
+      setWhatsapp(adminStore.getWhatsApp());
+    });
+    return () => unsub();
+  }, []);
 
   const parseUrl = useCallback((): Route => {
     let path = window.location.pathname.toLowerCase();
@@ -116,8 +124,9 @@ const App: React.FC = () => {
   }, [parseUrl]);
 
   useEffect(() => {
-    let title = "RAKS IT SOLUTIONS | Premier Software & SEO Agency in Telangana";
-    let description = "Expert Web Development, SEO, and Digital Marketing hub in Warangal, Hanamkonda & Hyderabad.";
+    const seoSettings = adminStore.getSEO();
+    let title = seoSettings.metaTitle || "RAKS IT SOLUTIONS | Premier Software & SEO Agency in Telangana";
+    let description = seoSettings.metaDescription || "Expert Web Development, SEO, and Digital Marketing hub in Warangal, Hanamkonda & Hyderabad.";
 
     if (currentRoute.type === 'service') {
       const s = SERVICES.find(x => x.id === currentRoute.id);
@@ -224,14 +233,20 @@ const App: React.FC = () => {
       <Footer onNavigate={() => {}} onSetRoute={setRoute} />
       {isAiOpen && <AIConsultant onClose={() => setIsAiOpen(false)} />}
       
-      <a 
-        href="https://wa.me/919010591950?text=Hello%20RAKS%20IT%20SOLUTIONS,%20I'm%20interested%20in%20your%20services." 
-        target="_blank"
-        className="fixed bottom-6 right-6 z-[60] bg-green-600 text-white p-4 rounded-full shadow-2xl hover:bg-green-700 transition-all hover:scale-110 active:scale-95 group flex items-center gap-3"
-      >
-        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-bold text-sm">Chat on WhatsApp</span>
-        <MessageCircle className="w-6 h-6" />
-      </a>
+      {whatsapp.floatingButtonVisible && whatsapp.phoneNumber && (
+        <a 
+          href={`https://wa.me/${whatsapp.phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsapp.defaultMessage)}`}
+          target="_blank"
+          rel="noreferrer"
+          className={`fixed ${whatsapp.buttonPosition === 'left' ? 'bottom-6 left-6' : 'bottom-6 right-6'} z-[60] bg-green-600 text-white p-4 rounded-full shadow-2xl hover:bg-green-700 transition-all hover:scale-110 active:scale-95 group flex items-center gap-3`}
+          title={whatsapp.hoverText || "Chat on WhatsApp"}
+        >
+          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 whitespace-nowrap font-bold text-sm">
+            {whatsapp.hoverText || "Chat on WhatsApp"}
+          </span>
+          <MessageCircle className="w-6 h-6" />
+        </a>
+      )}
     </div>
   );
 };
