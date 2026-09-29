@@ -1,0 +1,7 @@
+{
+  "name": "RAKS IT SOLUTIONS - Telangana's Premier Software & Digital Hub",
+  "description": "A high-performance, professional software services website for RAKS IT SOLUTIONS targeting Warangal, Hanamkonda, and major cities across Telangana.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
