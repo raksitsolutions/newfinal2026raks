@@ -72,7 +72,60 @@ export interface Testimonial {
   image: string;
 }
 
-export type ViewType = 'home' | 'service' | 'industry' | 'location' | 'industries-hub' | 'services-hub' | 'blog-hub' | 'blog-post' | 'about' | 'gallery' | 'contact-page' | 'logo-generator' | 'image-ai' | 'case-studies' | 'case-study' | 'terms' | 'privacy' | 'sitemap';
+export interface FAQ {
+  id: string;
+  category: string;
+  categoryLabel: string;
+  question: string;
+  answer: string;
+  keyPoints?: string[];
+  readTime: string;
+}
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  password?: string;
+  role: 'Super Admin' | 'Editor' | 'Support';
+  status: 'Active' | 'Suspended';
+  createdAt: string;
+  lastLogin?: string;
+}
+
+export interface Enquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: string;
+  service: string;
+  message: string;
+  source: string;
+  status: 'New' | 'Contacted' | 'In Progress' | 'Closed' | 'Spam';
+  notes?: string;
+  createdAt: string;
+}
+
+export interface CustomPage {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  metaTitle: string;
+  metaDescription: string;
+  content: string;
+  features: string[];
+  ctaText: string;
+  ctaLink: string;
+  showInNav: boolean;
+  showInFooter: boolean;
+  status: 'Published' | 'Draft';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ViewType = 'home' | 'service' | 'industry' | 'location' | 'industries-hub' | 'services-hub' | 'blog-hub' | 'blog-post' | 'about' | 'gallery' | 'contact-page' | 'logo-generator' | 'case-studies' | 'case-study' | 'terms' | 'privacy' | 'sitemap' | 'admin' | 'custom-page';
 
 export interface Route {
   type: ViewType;
@@ -89,7 +142,6 @@ export enum AppSection {
   CONTACT = 'contact',
   GALLERY = 'gallery',
   LOGO_GENERATOR = 'logo-generator',
-  IMAGE_AI = 'image-ai',
   SERVICES_HUB = 'services-hub',
   INDUSTRIES_HUB = 'industries-hub',
   BLOG_HUB = 'blog-hub'

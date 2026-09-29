@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { Menu, X, ChevronDown, MapPin, Grid, Briefcase, Info, Home, BookOpen, Laptop, Smartphone, TrendingUp, MessageCircle, Sparkles, HelpCircle } from 'lucide-react';
+import { Menu, X, ChevronDown, MapPin, Grid, Briefcase, Info, Home, BookOpen, Laptop, Smartphone, TrendingUp, MessageCircle, Sparkles, HelpCircle, Shield } from 'lucide-react';
 import { AppSection, Route } from '../types';
 import { TELANGANA_CITIES, SERVICES, INDUSTRIES, renderIcon } from '../constants';
+import BrandLogo from './BrandLogo';
 
 interface NavbarProps {
   activeSection: AppSection;
@@ -25,14 +26,11 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onSetRoute, 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Brand Logo */}
-          <div className="flex-shrink-0 flex items-center cursor-pointer group" onClick={() => { onSetRoute({ type: 'home' }); closeMenu(); }}>
-            <div className="relative w-10 h-10 bg-brand-blue rounded-full flex items-center justify-center text-white font-black text-xl mr-3 shadow-lg group-hover:scale-105 transition-transform">
-              R
-            </div>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black text-brand-blue tracking-tighter">RAKS</span>
-              <span className="text-[7px] font-bold text-brand-ash/60 uppercase tracking-[0.2em]">Experience full of ideas</span>
-            </div>
+          <div 
+            className="flex-shrink-0 flex items-center cursor-pointer group py-1" 
+            onClick={() => { onSetRoute({ type: 'home' }); closeMenu(); }}
+          >
+            <BrandLogo className="h-10 sm:h-12 w-auto transition-transform group-hover:scale-[1.02]" variant="dark" />
           </div>
 
           {/* Desktop Nav */}
@@ -144,8 +142,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onSetRoute, 
 
             <button onClick={() => onSetRoute({ type: 'blog-hub' })} className="text-[11px] font-black text-brand-ash hover:text-brand-blue transition-colors uppercase tracking-widest flex items-center gap-1.5"><BookOpen className="w-3.5 h-3.5" /> Blog</button>
 
-            <button onClick={() => onSetRoute({ type: 'image-ai' })} className="text-[11px] font-black text-brand-ash hover:text-brand-blue transition-colors uppercase tracking-widest flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5 text-brand-blue animate-pulse" /> Image AI</button>
-
             <button onClick={() => onSetRoute({ type: 'case-studies' })} className="text-[11px] font-black text-brand-ash hover:text-brand-blue transition-colors uppercase tracking-widest">Case Studies</button>
 
             <button 
@@ -162,6 +158,15 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onSetRoute, 
             </button>
 
             <button onClick={() => onSetRoute({ type: 'contact-page' })} className="text-[11px] font-black text-brand-ash hover:text-brand-blue transition-colors uppercase tracking-widest">Contact</button>
+
+            <button 
+              onClick={() => onSetRoute({ type: 'admin' })} 
+              className="text-[10px] font-black text-slate-500 hover:text-brand-blue transition-all uppercase tracking-wider flex items-center gap-1 px-3 py-1.5 rounded-full border border-slate-200 hover:border-brand-blue/40 hover:bg-brand-blue/5"
+              title="Staff Admin Login Portal"
+            >
+              <Shield className="w-3 h-3 text-brand-blue" />
+              <span>Admin</span>
+            </button>
 
             <button 
               onClick={() => {
@@ -185,7 +190,6 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onSetRoute, 
         <div className="px-6 py-10 space-y-4 bg-brand-white max-h-[90vh] overflow-y-auto">
           <button onClick={() => { onSetRoute({ type: 'home' }); closeMenu(); }} className="w-full text-left font-black text-brand-ash uppercase text-xs tracking-widest py-3 flex items-center gap-2"><Home className="w-5 h-5" /> Home</button>
           <button onClick={() => { onSetRoute({ type: 'about' }); closeMenu(); }} className="w-full text-left font-black text-brand-ash uppercase text-xs tracking-widest py-3 flex items-center gap-2"><Info className="w-5 h-5" /> About Us</button>
-          <button onClick={() => { onSetRoute({ type: 'image-ai' }); closeMenu(); }} className="w-full text-left font-black text-brand-ash uppercase text-xs tracking-widest py-3 flex items-center gap-2"><Sparkles className="w-5 h-5 text-brand-blue" /> Image AI</button>
           <button onClick={() => { onSetRoute({ type: 'services-hub' }); closeMenu(); }} className="w-full text-left font-black text-brand-ash uppercase text-xs tracking-widest py-3 flex items-center gap-2"><Grid className="w-5 h-5" /> Services</button>
           <button onClick={() => { onSetRoute({ type: 'industries-hub' }); closeMenu(); }} className="w-full text-left font-black text-brand-ash uppercase text-xs tracking-widest py-3 flex items-center gap-2"><Briefcase className="w-5 h-5" /> Industries</button>
           <button onClick={() => { onSetRoute({ type: 'case-studies' }); closeMenu(); }} className="w-full text-left font-black text-brand-ash uppercase text-xs tracking-widest py-3 flex items-center gap-2"><TrendingUp className="w-5 h-5" /> Case Studies</button>
@@ -219,7 +223,16 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection, onNavigate, onSetRoute, 
           >
             <HelpCircle className="w-5 h-5 text-brand-blue" /> FAQs
           </button>
-          <button onClick={() => { onOpenAI(); closeMenu(); }} className="w-full bg-brand-blue text-white p-5 rounded-2xl font-black flex items-center justify-center gap-3 uppercase text-xs mt-6">
+          <button 
+            onClick={() => { 
+              onSetRoute({ type: 'admin' }); 
+              closeMenu(); 
+            }} 
+            className="w-full text-left font-black text-slate-600 hover:text-brand-blue uppercase text-xs tracking-widest py-3 flex items-center gap-2 border-t border-slate-100 mt-2 pt-4"
+          >
+            <Shield className="w-5 h-5 text-brand-blue" /> Admin Portal & Dashboard
+          </button>
+          <button onClick={() => { onOpenAI(); closeMenu(); }} className="w-full bg-brand-blue text-white p-5 rounded-2xl font-black flex items-center justify-center gap-3 uppercase text-xs mt-4">
             AI Assistant
           </button>
           <a 

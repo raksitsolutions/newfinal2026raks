@@ -1,9 +1,19 @@
 
-import React from 'react';
-import { TESTIMONIALS } from '../constants';
+import React, { useState, useEffect } from 'react';
+import { adminStore } from '../services/adminStore';
+import { Testimonial } from '../types';
 import { Quote, Star } from 'lucide-react';
 
 const TestimonialsSection: React.FC = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(() => adminStore.getTestimonials());
+
+  useEffect(() => {
+    const unsubscribe = adminStore.subscribe(() => {
+      setTestimonials(adminStore.getTestimonials());
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <section className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,7 +26,7 @@ const TestimonialsSection: React.FC = () => {
         </div>
 
         <div className="grid md:grid-cols-3 gap-10">
-          {TESTIMONIALS.map((testimonial) => (
+          {testimonials.map((testimonial) => (
             <div 
               key={testimonial.id}
               className="relative bg-brand-ash/5 p-10 rounded-[3rem] border border-brand-ash/10 hover:shadow-2xl transition-all duration-500 group"

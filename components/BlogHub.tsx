@@ -1,6 +1,7 @@
 
-import React from 'react';
-import { BLOG_POSTS } from '../constants';
+import React, { useState, useEffect } from 'react';
+import { adminStore } from '../services/adminStore';
+import { BlogPost } from '../types';
 import { ArrowLeft, ArrowRight, BookOpen, Clock, User } from 'lucide-react';
 
 interface BlogHubProps {
@@ -9,6 +10,15 @@ interface BlogHubProps {
 }
 
 const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onBack }) => {
+  const [posts, setPosts] = useState<BlogPost[]>(() => adminStore.getBlogs());
+
+  useEffect(() => {
+    const unsubscribe = adminStore.subscribe(() => {
+      setPosts(adminStore.getBlogs());
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div className="bg-brand-ash/5 min-h-screen pb-24">
       <div className="bg-brand-ash py-32 text-white relative overflow-hidden">
@@ -23,7 +33,7 @@ const BlogHub: React.FC<BlogHubProps> = ({ onSelectPost, onBack }) => {
 
       <div className="max-w-7xl mx-auto px-6 -mt-16 relative z-10">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {BLOG_POSTS.map((post) => (
+          {posts.map((post) => (
             <div 
               key={post.id}
               onClick={() => onSelectPost(post.id)}

@@ -45,7 +45,6 @@ const Sitemap: React.FC<SitemapProps> = ({ onBack, onSetRoute }) => {
                 { name: 'Gallery', route: { type: 'gallery' } },
                 { name: 'Contact Us', route: { type: 'contact-page' } },
                 { name: 'Logo Generator', route: { type: 'logo-generator' } },
-                { name: 'Image AI Generator', route: { type: 'image-ai' } },
                 { name: 'Case Studies', route: { type: 'case-studies' } },
                 { name: 'Frequently Asked Questions (FAQ)', route: { type: 'home' } },
                 { name: 'Terms & Conditions', route: { type: 'terms' } },

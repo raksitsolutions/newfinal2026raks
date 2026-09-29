@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle, ArrowRight } from 'lucide-react';
+import { adminStore } from '../services/adminStore';
 
 const ContactSection: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     location: 'Warangal / Hanamkonda',
     service: 'Web Development',
     message: ''
@@ -15,10 +17,22 @@ const ContactSection: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Save directly to Admin Enquiry Store
+    adminStore.addEnquiry({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone || '+91 - Not provided',
+      location: formData.location,
+      service: formData.service,
+      message: formData.message,
+      source: 'Website Contact Form'
+    });
+
     const whatsappNumber = "919010591950";
     const text = `*New Inquiry from RAKS IT SOLUTIONS Website*
 *Name:* ${formData.name}
 *Email:* ${formData.email}
+*Phone:* ${formData.phone || 'N/A'}
 *Location:* ${formData.location}
 *Service:* ${formData.service}
 *Message:* ${formData.message}`;
@@ -135,6 +149,17 @@ const ContactSection: React.FC = () => {
                   placeholder="john@example.com"
                 />
               </div>
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-brand-white/40 mb-2 uppercase tracking-tight">Phone Number / WhatsApp</label>
+              <input 
+                type="tel" 
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full bg-brand-ash/40 border border-brand-ash/60 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-blue transition-all text-white"
+                placeholder="+91 90105 91950"
+              />
             </div>
             <div>
               <label className="block text-sm font-bold text-brand-white/40 mb-2 uppercase tracking-tight">Location</label>

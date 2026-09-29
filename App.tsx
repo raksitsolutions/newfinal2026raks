@@ -22,11 +22,13 @@ import HomeSlider from './components/HomeSlider';
 import Gallery from './components/Gallery';
 import ContactPage from './components/ContactPage';
 import LogoGenerator from './components/LogoGenerator';
-import ImageAI from './components/ImageAI';
 import CaseStudiesHub from './components/CaseStudiesHub';
 import CaseStudyView from './components/CaseStudyView';
 import TestimonialsSection from './components/TestimonialsSection';
 import FAQSection from './components/FAQSection';
+import AdminDashboard from './components/admin/AdminDashboard';
+import CustomPageView from './components/CustomPageView';
+import { adminStore } from './services/adminStore';
 import { AppSection, Route, ViewType } from './types';
 import { SERVICES, INDUSTRIES, TELANGANA_CITIES, BLOG_POSTS, CASE_STUDIES } from './constants';
 
@@ -40,6 +42,7 @@ const App: React.FC = () => {
     if (path.length > 1 && path.endsWith('/')) path = path.slice(0, -1);
 
     if (path === '' || path === '/' || path === '/home') return { type: 'home' };
+    if (path === '/admin' || path === '/admin/login' || path === '/admin/dashboard') return { type: 'admin' };
     if (path === '/about-us') return { type: 'about' };
     if (path === '/industries') return { type: 'industries-hub' };
     if (path === '/services') return { type: 'services-hub' };
@@ -47,11 +50,19 @@ const App: React.FC = () => {
     if (path === '/gallery') return { type: 'gallery' };
     if (path === '/contact-us') return { type: 'contact-page' };
     if (path === '/logo-generator') return { type: 'logo-generator' };
-    if (path === '/image-ai') return { type: 'image-ai' };
     if (path === '/case-studies') return { type: 'case-studies' };
     if (path === '/terms-and-conditions') return { type: 'terms' };
     if (path === '/privacy-policy') return { type: 'privacy' };
     if (path === '/sitemap') return { type: 'sitemap' };
+
+    const pageMatch = path.match(/^\/page\/(.+)$/);
+    if (pageMatch) return { type: 'custom-page', id: pageMatch[1] };
+
+    // Check direct custom page slug e.g. /careers
+    const directSlug = path.replace(/^\//, '');
+    if (directSlug && adminStore.getPageBySlug(directSlug)) {
+      return { type: 'custom-page', id: directSlug };
+    }
 
     const serviceMatch = path.match(/^\/services\/(.+)$/);
     if (serviceMatch) return { type: 'service', id: serviceMatch[1] };
@@ -82,11 +93,12 @@ const App: React.FC = () => {
       case 'gallery': path = '/gallery'; break;
       case 'contact-page': path = '/contact-us'; break;
       case 'logo-generator': path = '/logo-generator'; break;
-      case 'image-ai': path = '/image-ai'; break;
       case 'case-studies': path = '/case-studies'; break;
       case 'terms': path = '/terms-and-conditions'; break;
       case 'privacy': path = '/privacy-policy'; break;
       case 'sitemap': path = '/sitemap'; break;
+      case 'admin': path = '/admin'; break;
+      case 'custom-page': path = `/page/${route.id}`; break;
       case 'case-study': path = `/case-studies/${route.id}`; break;
       case 'service': path = `/services/${route.id}`; break;
       case 'industry': path = `/industries/${route.id}`; break;
@@ -125,9 +137,6 @@ const App: React.FC = () => {
     } else if (currentRoute.type === 'case-study') {
       const s = CASE_STUDIES.find(x => x.id === currentRoute.id);
       if (s) { title = `${s.title} | Case Study | RAKS IT SOLUTIONS`; description = s.description; }
-    } else if (currentRoute.type === 'image-ai') {
-      title = "Free Social Media Image AI Generator | RAKS IT SOLUTIONS";
-      description = "Design custom, high-res graphics, thumbnails, and posts for Instagram, YouTube, and Facebook in seconds with our free Image AI generator.";
     } else if (currentRoute.type === 'terms') {
       title = "Terms & Conditions | RAKS IT SOLUTIONS";
       description = "Read our terms and conditions for using RAKS IT SOLUTIONS services in Telangana.";
@@ -137,6 +146,15 @@ const App: React.FC = () => {
     } else if (currentRoute.type === 'sitemap') {
       title = "Sitemap | RAKS IT SOLUTIONS";
       description = "A complete directory of all pages on the RAKS IT SOLUTIONS website.";
+    } else if (currentRoute.type === 'admin') {
+      title = "Admin Dashboard | RAKS IT SOLUTIONS";
+      description = "Authorized staff management portal for enquiries, blogs, pages, and website content.";
+    } else if (currentRoute.type === 'custom-page') {
+      const cp = adminStore.getPageBySlug(currentRoute.id || '');
+      if (cp) {
+        title = `${cp.metaTitle || cp.title} | RAKS IT SOLUTIONS`;
+        description = cp.metaDescription || cp.subtitle;
+      }
     }
 
     document.title = title;
@@ -173,15 +191,24 @@ const App: React.FC = () => {
       case 'gallery': return <Gallery onBack={() => setRoute({ type: 'home' })} />;
       case 'contact-page': return <ContactPage onBack={() => setRoute({ type: 'home' })} />;
       case 'logo-generator': return <LogoGenerator onBack={() => setRoute({ type: 'home' })} />;
-      case 'image-ai': return <ImageAI onBack={() => setRoute({ type: 'home' })} />;
       case 'case-studies': return <CaseStudiesHub onSelectCaseStudy={(id) => setRoute({ type: 'case-study', id })} onBack={() => setRoute({ type: 'home' })} />;
       case 'case-study': return <CaseStudyView study={CASE_STUDIES.find(s => s.id === currentRoute.id)!} onBack={() => setRoute({ type: 'case-studies' })} />;
       case 'terms': return <TermsAndConditions onBack={() => setRoute({ type: 'home' })} />;
       case 'privacy': return <PrivacyPolicy onBack={() => setRoute({ type: 'home' })} />;
       case 'sitemap': return <Sitemap onBack={() => setRoute({ type: 'home' })} onSetRoute={setRoute} />;
+      case 'custom-page': {
+        const cp = adminStore.getPageBySlug(currentRoute.id || '');
+        if (cp) return <CustomPageView page={cp} onBack={() => setRoute({ type: 'home' })} />;
+        return <LandingPage route={currentRoute} onBack={() => setRoute({ type: 'home' })} />;
+      }
+      case 'admin': return <AdminDashboard onBackToSite={() => setRoute({ type: 'home' })} onSetRoute={setRoute} />;
       default: return <LandingPage route={currentRoute} onBack={() => setRoute({ type: 'home' })} />;
     }
   };
+
+  if (currentRoute.type === 'admin') {
+    return <AdminDashboard onBackToSite={() => setRoute({ type: 'home' })} onSetRoute={setRoute} />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

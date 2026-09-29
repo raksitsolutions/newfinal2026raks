@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ArrowRight, ShieldCheck, Zap, Award } from 'lucide-react';
+import BrandLogo from './BrandLogo';
 
 interface HomeAboutSectionProps {
   onReadMore: () => void;
@@ -29,9 +30,9 @@ const HomeAboutSection: React.FC<HomeAboutSectionProps> = ({ onReadMore }) => {
         </div>
 
         <div>
-          <span className="inline-block px-4 py-1.5 rounded-full bg-brand-blue/5 text-brand-blue text-[10px] font-black uppercase tracking-widest mb-6 border border-brand-blue/10">
-            Experience full of ideas
-          </span>
+          <div className="mb-6">
+            <BrandLogo className="h-8 sm:h-9 w-auto" variant="dark" />
+          </div>
           <h2 className="text-4xl sm:text-5xl font-black text-brand-ash mb-8 leading-[1.1] tracking-tight">
             We are the Architects of <span className="text-brand-blue">Digital Growth</span> in Telangana.
           </h2>

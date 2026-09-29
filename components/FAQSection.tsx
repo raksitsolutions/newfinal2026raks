@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ChevronDown, 
   ChevronUp, 
@@ -16,6 +16,7 @@ import {
   X
 } from 'lucide-react';
 import { Route } from '../types';
+import { adminStore } from '../services/adminStore';
 
 export interface FAQ {
   id: string;
@@ -191,21 +192,29 @@ interface FAQSectionProps {
 }
 
 const FAQSection: React.FC<FAQSectionProps> = ({ onSetRoute }) => {
+  const [faqsList, setFaqsList] = useState<FAQ[]>(() => (adminStore.getFAQs() as unknown as FAQ[]) || FAQS_DATA);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [openIds, setOpenIds] = useState<Set<string>>(new Set(['software-services', 'marketing-services']));
   const [helpfulFeedback, setHelpfulFeedback] = useState<Record<string, boolean>>({});
 
+  useEffect(() => {
+    const unsubscribe = adminStore.subscribe(() => {
+      setFaqsList(adminStore.getFAQs() as unknown as FAQ[]);
+    });
+    return () => unsubscribe();
+  }, []);
+
   const categories = [
-    { id: 'all', label: 'All Questions', count: FAQS_DATA.length },
-    { id: 'software', label: 'Software Engineering', count: FAQS_DATA.filter(f => f.category === 'software').length },
-    { id: 'marketing', label: 'Digital Marketing & SEO', count: FAQS_DATA.filter(f => f.category === 'marketing').length },
-    { id: 'pricing', label: 'Pricing & Delivery', count: FAQS_DATA.filter(f => f.category === 'pricing').length },
-    { id: 'support', label: 'Security & Quality', count: FAQS_DATA.filter(f => f.category === 'support').length }
+    { id: 'all', label: 'All Questions', count: faqsList.length },
+    { id: 'software', label: 'Software Engineering', count: faqsList.filter(f => f.category === 'software').length },
+    { id: 'marketing', label: 'Digital Marketing & SEO', count: faqsList.filter(f => f.category === 'marketing').length },
+    { id: 'pricing', label: 'Pricing & Delivery', count: faqsList.filter(f => f.category === 'pricing').length },
+    { id: 'support', label: 'Security & Quality', count: faqsList.filter(f => f.category === 'support').length }
   ];
 
   const filteredFaqs = useMemo(() => {
-    return FAQS_DATA.filter(item => {
+    return faqsList.filter(item => {
       const matchesCategory = activeCategory === 'all' || item.category === activeCategory;
       const q = searchQuery.toLowerCase().trim();
       if (!q) return matchesCategory;

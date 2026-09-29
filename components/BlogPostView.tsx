@@ -1,6 +1,7 @@
 
-import React from 'react';
-import { BLOG_POSTS } from '../constants';
+import React, { useState, useEffect } from 'react';
+import { adminStore } from '../services/adminStore';
+import { BlogPost } from '../types';
 import { ArrowLeft, MessageCircle, Send, CheckCircle, Zap, MapPin } from 'lucide-react';
 
 interface BlogPostViewProps {
@@ -9,9 +10,25 @@ interface BlogPostViewProps {
 }
 
 const BlogPostView: React.FC<BlogPostViewProps> = ({ postId, onBack }) => {
-  const post = BLOG_POSTS.find(p => p.id === postId);
+  const [post, setPost] = useState<BlogPost | undefined>(() => adminStore.getBlogById(postId));
 
-  if (!post) return <div className="p-20 text-center">Post Not Found</div>;
+  useEffect(() => {
+    setPost(adminStore.getBlogById(postId));
+    const unsubscribe = adminStore.subscribe(() => {
+      setPost(adminStore.getBlogById(postId));
+    });
+    return () => unsubscribe();
+  }, [postId]);
+
+  if (!post) return (
+    <div className="p-20 text-center bg-white min-h-[50vh] flex flex-col items-center justify-center">
+      <h2 className="text-3xl font-black text-brand-ash mb-4">Post Not Found</h2>
+      <p className="text-brand-ash/60 mb-6">The article you requested could not be located or may have been unlisted.</p>
+      <button onClick={onBack} className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold">
+        Back to Insights
+      </button>
+    </div>
+  );
 
   return (
     <div className="bg-white min-h-screen pb-24">

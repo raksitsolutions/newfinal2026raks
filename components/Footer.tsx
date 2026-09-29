@@ -1,8 +1,9 @@
 
 import React from 'react';
-import { Facebook, Twitter, Instagram, Linkedin, Heart, MessageCircle, Send } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, Heart, MessageCircle, Send, Shield } from 'lucide-react';
 import { AppSection, Route } from '../types';
 import { TELANGANA_CITIES, SERVICES } from '../constants';
+import BrandLogo from './BrandLogo';
 
 interface FooterProps {
   onNavigate: (section: AppSection) => void;
@@ -16,8 +17,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onSetRoute }) => {
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-16">
           <div className="md:col-span-2 lg:col-span-2">
             <div className="flex items-center text-white mb-6">
-              <div className="w-8 h-8 bg-brand-blue rounded-md flex items-center justify-center font-bold text-lg mr-2">R</div>
-              <span className="text-xl font-bold">RAKS IT SOLUTIONS</span>
+              <BrandLogo className="h-11 sm:h-12 w-auto" variant="light" />
             </div>
             <p className="max-w-xs mb-8">
               Leading the digital revolution in Telangana. Providing world-class software and marketing solutions from Warangal to the global stage.
@@ -37,7 +37,6 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onSetRoute }) => {
               <li><button onClick={() => onSetRoute({ type: 'about' })} className="hover:text-brand-blue transition-colors">About Us</button></li>
               <li><button onClick={() => onSetRoute({ type: 'services-hub' })} className="hover:text-brand-blue transition-colors">Services Hub</button></li>
               <li><button onClick={() => onSetRoute({ type: 'industries-hub' })} className="hover:text-brand-blue transition-colors">Industries</button></li>
-              <li><button onClick={() => onSetRoute({ type: 'image-ai' })} className="hover:text-brand-blue transition-colors">Image AI Generator</button></li>
               <li><button onClick={() => onSetRoute({ type: 'logo-generator' })} className="hover:text-brand-blue transition-colors">Logo Generator</button></li>
               <li><button onClick={() => onSetRoute({ type: 'case-studies' })} className="hover:text-brand-blue transition-colors">Case Studies</button></li>
               <li><button onClick={() => onSetRoute({ type: 'blog-hub' })} className="hover:text-brand-blue transition-colors">Blog</button></li>
@@ -53,6 +52,14 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onSetRoute }) => {
                   className="hover:text-brand-blue transition-colors"
                 >
                   FAQs
+                </button>
+              </li>
+              <li>
+                <button 
+                  onClick={() => onSetRoute({ type: 'admin' })} 
+                  className="hover:text-brand-blue transition-colors text-slate-400 flex items-center gap-1.5"
+                >
+                  <Shield className="w-3.5 h-3.5 text-brand-blue" /> Admin Portal
                 </button>
               </li>
             </ul>
@@ -89,6 +96,7 @@ const Footer: React.FC<FooterProps> = ({ onNavigate, onSetRoute }) => {
             <button onClick={() => onSetRoute({ type: 'terms' })} className="hover:text-brand-blue transition-colors">Terms</button>
             <button onClick={() => onSetRoute({ type: 'privacy' })} className="hover:text-brand-blue transition-colors">Privacy</button>
             <button onClick={() => onSetRoute({ type: 'sitemap' })} className="hover:text-brand-blue transition-colors">Sitemap</button>
+            <button onClick={() => onSetRoute({ type: 'admin' })} className="hover:text-brand-blue transition-colors text-slate-400">Admin Login</button>
           </div>
           <div className="flex items-center">
             Made with <Heart className="w-4 h-4 text-red-500 mx-1" /> in Warangal, Telangana
